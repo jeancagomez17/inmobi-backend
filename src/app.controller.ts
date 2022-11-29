@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   getHello(@Session() sesion: Record<string,any>): string {
-    console.log(sesion?.id)
+    //console.log(sesion?.id)
     return this.appService.getHello();
   }
 }

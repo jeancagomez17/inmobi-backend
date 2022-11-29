@@ -20,7 +20,7 @@ export class RolService {
     if(exist === 1) return  {msg: `El rol ${nameRol?.name} ya existe`}
     return await this.rolRepository.save(data)
   }
-  async findOne(idRol:string):Promise<Rol | {}>{
+  async findOne(idRol:number):Promise<Rol | {}>{
     const data = await this.rolRepository.findOneBy({id:idRol})
     if(data === null) return {msg:"No existe ese rol"}
     return data

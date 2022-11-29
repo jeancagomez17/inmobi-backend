@@ -10,6 +10,6 @@ export class AppService {
   ) {}
   getHello(): string {
     
-    return 'Hello World!' + this.config.get('NOMBREP');
+    return 'Welcome my inmobi api';
   }
 }

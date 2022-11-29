@@ -12,7 +12,7 @@ export class RolController {
     }
     @Get(':id')
     async getById(@Param('id') idRol:string){
-        return await this.rolService.findOne(idRol)
+        return await this.rolService.findOne(+idRol)
     }
 
     @Post('create')

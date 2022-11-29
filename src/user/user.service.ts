@@ -12,10 +12,11 @@ export class UserService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto, email:string) {
+  async create(createUserDto: CreateUserDto, email:string, rolId:number) {
     const prueba = await this.usersRepository.find({where: {email}})
     if(prueba.length === 0){
-      const data = this.usersRepository.create(createUserDto)
+      // const data = this.usersRepository.create({...createUserDto, rol:{id:1}})
+      const data = this.usersRepository.create({...createUserDto, rol:{id:rolId}})
       await this.usersRepository.save(data)
       return data
        
@@ -23,8 +24,8 @@ export class UserService {
     return {msg:"Ya existe ese correo registrado"}
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.usersRepository.find({relations:['Rol']});
+  async findAll(): Promise<User[] | {}> {
+    return await this.usersRepository.find({relations:['rol']});
   }
 
   findOne(id: number): Promise<any> {

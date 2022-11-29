@@ -21,12 +21,5 @@ export const UserSchema = new EntitySchema<User>({
     password: {
       type: String,
     },
-  },
-  relations:{
-    Rol:{
-      type: 'many-to-one',
-      target: 'rol',
-      nullable:false
-    }
   }
 });

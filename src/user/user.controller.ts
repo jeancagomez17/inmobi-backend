@@ -6,15 +6,15 @@ import { JwtAuthGuard } from 'src/auth/jwt-aut.guard';
 import { AuthGuard } from '@nestjs/passport';
 @ApiBearerAuth()
 @ApiTags('users')
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto, @Body('email') email:string) {
-    console.log(createUserDto)
-    const data =   await this.userService.create(createUserDto, email);
+  async create(@Body() createUserDto: CreateUserDto, @Body() body:any) {
+    const {Rol, email} = createUserDto
+    const data =   await this.userService.create(createUserDto, email, Rol);
     return { msg: "Created New User", data}
   }
   

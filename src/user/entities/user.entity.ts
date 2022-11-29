@@ -5,6 +5,8 @@ import {
   PrimaryGeneratedColumn,
   JoinTable,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Rol } from 'src/rol-perm/entities/rol.entity';
 
@@ -18,12 +20,23 @@ export class User {
   email: string;
   @Column()
   password: string;
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  public created_at: Date;
 
-  @Column()
-  Rol:string
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  public updated_at: Date;
 
-   @ManyToOne(() => Rol, (rol) => rol.users, {cascade:true, nullable: false})
-   @JoinTable()
-   rol: Rol;
- 
+  //  @Column()
+  //  rolId:string
+
+  @ManyToOne(() => Rol, (rol) => rol.users, { cascade: true, nullable: false })
+  @JoinTable()
+  rol: Rol;
 }

@@ -1,16 +1,37 @@
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  JoinTable,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Permissions } from './perm.entity';
-Permissions
+Permissions;
 @Entity('rol')
-export class Rol{
-    @PrimaryGeneratedColumn()
-     id: string;
-     @Column()
-     name:string;
+export class Rol {
+  @PrimaryGeneratedColumn()
+  id: number;
+  @Column()
+  name: string;
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  public created_at: Date;
 
-    //  @ManyToMany(() => Permissions, (perm) => perm.roles)
-    //  perm:Permissions[]
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  public updated_at: Date;
 
-     @OneToMany(type => User, user => user.rol) users: User[]; 
+  @ManyToMany(() => Permissions, (perm) => perm.roles)
+  perm: Permissions[];
+
+  @OneToMany((type) => User, (user) => user.rol) users: User[];
 }

@@ -20,7 +20,7 @@ export class CreateUserDto {
 
   @IsNumber()
   @ApiProperty({name:'Rol', description:'id rol'})
-  readonly Rol:string
+  readonly Rol:number
 
 }
 
