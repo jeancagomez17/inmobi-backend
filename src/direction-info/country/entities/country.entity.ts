@@ -1,22 +1,19 @@
-import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
-  ManyToMany,
   PrimaryGeneratedColumn,
-  JoinTable,
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Permissions } from './perm.entity';
-Permissions;
-@Entity('rol')
-export class Rol {
+import { Department } from 'src/direction-info/department/entity/department.entities';
+
+@Entity()
+export class Country {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  name: string;
+  name_country: string;
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
@@ -30,8 +27,6 @@ export class Rol {
   })
   public updated_at: Date;
 
-  @ManyToMany(() => Permissions, (perm) => perm.roles)
-  perm: Permissions[];
-
-  @OneToMany(() => User, (user) => user.rol) users: User[];
+  @OneToMany(()=> Department, (department)=> department.country)
+  departments: Department[]
 }

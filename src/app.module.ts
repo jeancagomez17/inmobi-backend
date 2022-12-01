@@ -1,16 +1,18 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import {ConfigModule, ConfigService} from '@nestjs/config'
 import { enviroments } from 'enviroments';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthMiddleware } from './auth/auth.middleware';
 
 import config from 'config';
 import { RolPermModule } from './rol-perm/rol_perm.module';
+import { DirectionInfoModule } from './direction-info/direction-info.module';
+import { OwnerModule } from './owner/owner.module';
 
 require('dotenv').config();
 @Module({
@@ -24,11 +26,18 @@ require('dotenv').config();
     DatabaseModule,
     UserModule,
     AuthModule,
-    RolPermModule
+    RolPermModule,
+    DirectionInfoModule,
+    OwnerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
+export class AppModule implements NestModule{
   constructor(private dataSource: DataSource) {}
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes({ path: 'user', method: RequestMethod.GET });
+  }
 }

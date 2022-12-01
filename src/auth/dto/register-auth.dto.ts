@@ -21,8 +21,4 @@ export class RegisterAuthDto extends PartialType(LoginAuthDto) {
     @IsNotEmpty()
     @ApiProperty()
     name:string
-
-    @IsNumber()
-    @ApiProperty()
-    Rol:string
 }

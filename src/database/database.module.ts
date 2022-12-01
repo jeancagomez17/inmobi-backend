@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 
 import config from 'config';
-import { DataSource } from 'typeorm';
+import { DataSource, Entity } from 'typeorm';
 
 
 @Module({
@@ -22,7 +22,8 @@ import { DataSource } from 'typeorm';
                     type: 'mysql',
                     url: name,
                     synchronize: true, 
-                    autoLoadEntities: true //cargue automaticamente las entidades
+                    autoLoadEntities: true, //cargue automaticamente las entidades
+                    entities:["src/**/**/*.entity{.ts}"]
                 }
             }
         })
