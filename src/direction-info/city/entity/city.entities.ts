@@ -6,8 +6,10 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
-import { Department } from '../department.entities';
+import { Department } from '../../department/entity/department.entities';
+import { Owner } from 'src/owner/entities/owner.entity';
 
 @Entity()
 export class City {
@@ -32,4 +34,7 @@ export class City {
   @ManyToOne(()=> Department, (department)=> department.city, { cascade: true, nullable: false })
     @JoinTable()
     department:Department
+
+    @OneToMany(()=> Owner, (owner)=> owner.city)
+    owner: Owner[]
 }

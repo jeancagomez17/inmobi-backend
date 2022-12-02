@@ -9,7 +9,7 @@ import {
     OneToMany,
   } from 'typeorm';
   import { Country } from 'src/direction-info/country/entities/country.entity';
-  import { City } from './entity/city.entities';
+  import { City } from '../../city/entity/city.entities';
 
   @Entity()
   export class Department{

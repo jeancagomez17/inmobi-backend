@@ -13,6 +13,7 @@ import config from 'config';
 import { RolPermModule } from './rol-perm/rol_perm.module';
 import { DirectionInfoModule } from './direction-info/direction-info.module';
 import { OwnerModule } from './owner/owner.module';
+import { CustomerModule } from './customer/customer.module';
 
 require('dotenv').config();
 @Module({
@@ -29,6 +30,7 @@ require('dotenv').config();
     RolPermModule,
     DirectionInfoModule,
     OwnerModule,
+    CustomerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
