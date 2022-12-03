@@ -14,6 +14,7 @@ import { RolPermModule } from './rol-perm/rol_perm.module';
 import { DirectionInfoModule } from './direction-info/direction-info.module';
 import { OwnerModule } from './owner/owner.module';
 import { CustomerModule } from './customer/customer.module';
+import { PropertyModule } from './property/property.module';
 
 require('dotenv').config();
 @Module({
@@ -31,6 +32,7 @@ require('dotenv').config();
     DirectionInfoModule,
     OwnerModule,
     CustomerModule,
+    PropertyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
