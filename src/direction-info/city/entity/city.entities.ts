@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Department } from '../../department/entity/department.entities';
 import { Owner } from 'src/owner/entities/owner.entity';
+import { Property } from 'src/property/entities/property.entity';
 
 @Entity()
 export class City {
@@ -37,4 +38,7 @@ export class City {
 
     @OneToMany(()=> Owner, (owner)=> owner.city)
     owner: Owner[]
+
+    @OneToMany(()=>Property, (prop)=> prop.city)
+    property:City[]
 }

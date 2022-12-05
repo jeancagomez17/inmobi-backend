@@ -1,3 +1,4 @@
+import { Property } from 'src/property/entities/property.entity';
 import {
   Column,
   Entity,
@@ -40,4 +41,7 @@ export class Customer {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   public updated_at: Date;
+
+  @OneToMany(()=>Property, (prop)=>prop.customer)
+  property:Property[]
 }
