@@ -23,7 +23,7 @@ export class CountryService {
 
   async create(data: any) {
     const exist = await this.countryRepository.findOneBy({
-      name_country: data.name_country,
+      name_country: data?.name_country,
     });
     if (!exist) {
         const newCountry = await this.countryRepository.create(data);
