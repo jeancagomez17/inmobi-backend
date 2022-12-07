@@ -19,7 +19,7 @@ export class UserService {
       const data = this.usersRepository.create({...createUserDto, rol:{id:rolId}})
       await this.usersRepository.save(data)
       return data
-       
+      
     }
     return {msg:"Ya existe ese correo registrado"}
   }

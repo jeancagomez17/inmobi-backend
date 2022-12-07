@@ -10,6 +10,11 @@ export class CountryService {
     @InjectRepository(Country)
     private readonly countryRepository: Repository<Country>,
   ) {}
+  
+    async existCountry(id:number){
+      const exist = await this.countryRepository.findOneBy({id})
+      return exist
+    }
 
   async getAll():Promise<Country[] | {}> {
     const data = await this.countryRepository.find();
@@ -36,7 +41,7 @@ export class CountryService {
   }
 
   async deleted(id:number){
-    const exist = await this.countryRepository.findOneBy({id})
+    const exist = await this.existCountry(id)
     if(exist) {
       await this.countryRepository.delete(id)
       return {msg: `Country deleted ${id}`}
@@ -45,7 +50,7 @@ export class CountryService {
   }
 
   async updated(id:number, data:CountryUpdateDto) {
-    const exist = await this.countryRepository.findOneBy({id})
+    const exist = await this.existCountry(id)
     if(exist) {
       await this.countryRepository.update(id,data)
       return {msg: `Country updated from ${exist.name_country} to ${data.name_country}` }
