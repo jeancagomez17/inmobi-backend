@@ -10,21 +10,31 @@ export class CountryService {
     @InjectRepository(Country)
     private readonly countryRepository: Repository<Country>,
   ) {}
-  
-    async existCountry(id:number){
-      const exist = await this.countryRepository.findOneBy({id})
-      return exist
-    }
 
-  async getAll():Promise<Country[] | {}> {
+  async existCountry(id: number) {
+    const exist = await this.countryRepository.findOneBy({ id });
+    return exist;
+  }
+
+  async getAll(): Promise<Country[] | {}> {
     const data = await this.countryRepository.find();
     return data;
   }
 
-  async getOneById(id:number): Promise<Country | {}> {
-    const data = await this.countryRepository.findOneBy({id})
-    if(!data)return {msg:"the country does not exist"}
-    return data
+  async getOneById(id: number): Promise<Country | {}> {
+    const exist = await this.existCountry(id);
+    if (!exist) return { msg: 'The country does not exist' };
+    return exist;
+  }
+  
+  async getOneByName(name_country: string): Promise<Country | {}> {
+    try {
+      const data = await this.countryRepository.findOneBy({ name_country });
+      if (!data) return { msg: 'The country does not exist' };
+      return data;
+    } catch (error) {
+      return { msg: error.message };
+    }
   }
 
   async create(data: CountryCreateDto) {
@@ -32,29 +42,30 @@ export class CountryService {
       name_country: data?.name_country,
     });
     if (!exist) {
-        const newCountry = await this.countryRepository.create(data);
-        await this.countryRepository.save(newCountry);
-        return newCountry;
+      const newCountry = await this.countryRepository.create(data);
+      await this.countryRepository.save(newCountry);
+      return newCountry;
     }
     return { msg: `Country already exists ${data?.name_country}` };
-    
   }
 
-  async deleted(id:number){
-    const exist = await this.existCountry(id)
-    if(exist) {
-      await this.countryRepository.delete(id)
-      return {msg: `Country deleted ${id}`}
+  async deleted(id: number) {
+    const exist = await this.existCountry(id);
+    if (exist) {
+      await this.countryRepository.delete(id);
+      return { msg: `Country deleted ${id}` };
     }
-    return {msg: `The country ${id} not exists`}
+    return { msg: `The country ${id} not exists` };
   }
 
-  async updated(id:number, data:CountryUpdateDto) {
-    const exist = await this.existCountry(id)
-    if(exist) {
-      await this.countryRepository.update(id,data)
-      return {msg: `Country updated from ${exist.name_country} to ${data.name_country}` }
+  async updated(id: number, data: CountryUpdateDto) {
+    const exist = await this.existCountry(id);
+    if (exist) {
+      await this.countryRepository.update(id, data);
+      return {
+        msg: `Country updated from ${exist.name_country} to ${data.name_country}`,
+      };
     }
-    return {msg: `The country ${id} not exists`}
+    return { msg: `The country ${id} not exists` };
   }
 }
