@@ -13,9 +13,9 @@ export class DepartamentController {
     return departaments;
   }
 
-  @Get('country')
+  @Get('searchName')
   async getDepartamentByName(@Query('name') name:string){
-    const data = this.departamentService.getByName(name)
+    const data = this.departamentService.getOneByName(name)
     return data
   }
 

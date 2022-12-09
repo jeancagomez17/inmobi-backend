@@ -13,10 +13,18 @@ export class DepartamentService {
     private readonly countryService: CountryService,
   ) {}
 
-  private async existDepart(name_department: string) {
+  private async exist(name_department: string) {
     //metohd for verify that the department exists
     const data = await this.repositoryDepart.findOneBy({ name_department });
     return data;
+  }
+  private async existDepart(id:number){
+    try {
+      const data = await this.repositoryDepart.findOneBy({id})
+      return data
+    } catch (error) {
+      return error.message
+    } 
   }
 
   async getAll(): Promise<Department[] | {}> {
@@ -24,15 +32,21 @@ export class DepartamentService {
     return department;
   }
 
-  async getByName(name: string): Promise<Department[] | {}> {
-    const departament = await this.existDepart(name);
+  async getOneByName(name: string): Promise<Department[] | {}> {
+    const departament = await this.exist(name);
     return departament;
+  }
+
+  async getOneById(id:number): Promise<Department[] | {}> {
+    const exist = await this.existDepart(id)
+    if(!exist) return {msg:"The department does not exists"}
+    return exist
   }
 
   async create(data: DepartmentCreateDto) {
 
     try {
-      const exist = await this.existDepart(data.name_department);
+      const exist = await this.exist(data.name_department);
       const { countryId } = data; // destructure for verify the country
       const existCountry = await this.countryService.existCountry(countryId);
 
@@ -54,5 +68,15 @@ export class DepartamentService {
     } catch (error) {
       return { msg: 'Error creating department ' + error.message };
     }
+  }
+
+  async updated(id:number, data:DepartmentUpdateDto){
+      const exist = await this.existDepart(id)
+      if(exist) {
+         await this.repositoryDepart.update(id, data);
+         return {msg:`Department updated ${data.name_department}`}
+      }
+      return { msg: `The department ${id} does not exist`}
+    
   }
 }
