@@ -18,13 +18,13 @@ export class DepartamentService {
     const data = await this.repositoryDepart.findOneBy({ name_department });
     return data;
   }
-  private async existDepart(id:number){
+   async existDepart(id: number) {
     try {
-      const data = await this.repositoryDepart.findOneBy({id})
-      return data
+      const data = await this.repositoryDepart.findOneBy({ id });
+      return data;
     } catch (error) {
-      return error.message
-    } 
+      return error.message;
+    }
   }
 
   async getAll(): Promise<Department[] | {}> {
@@ -37,14 +37,13 @@ export class DepartamentService {
     return departament;
   }
 
-  async getOneById(id:number): Promise<Department[] | {}> {
-    const exist = await this.existDepart(id)
-    if(!exist) return {msg:"The department does not exists"}
-    return exist
+  async getOneById(id: number): Promise<Department[] | {}> {
+    const exist = await this.existDepart(id);
+    if (!exist) return { msg: 'The department does not exists' };
+    return exist;
   }
 
   async create(data: DepartmentCreateDto) {
-
     try {
       const exist = await this.exist(data.name_department);
       const { countryId } = data; // destructure for verify the country
@@ -64,19 +63,26 @@ export class DepartamentService {
       }
 
       return { msg: `Department already exists -> ${data.name_department}` };
-
     } catch (error) {
       return { msg: 'Error creating department ' + error.message };
     }
   }
 
-  async updated(id:number, data:DepartmentUpdateDto){
-      const exist = await this.existDepart(id)
-      if(exist) {
-         await this.repositoryDepart.update(id, data);
-         return {msg:`Department updated ${data.name_department}`}
-      }
-      return { msg: `The department ${id} does not exist`}
-    
+  async updated(id: number, data: DepartmentUpdateDto) {
+    const exist = await this.existDepart(id);
+    if (exist) {
+      await this.repositoryDepart.update(id, data);
+      return { msg: `Department updated ${data.name_department}` };
+    }
+    return { msg: `The department ${id} does not exist` };
+  }
+
+  async deleted(id: number) {
+    const exist = await this.existDepart(id);
+    if (exist) {
+      this.repositoryDepart.delete(id);
+      return { msg: `Department deleted ${exist.name_department}` };
+    }
+    return { msg: `The department ${id} does not exist` };
   }
 }

@@ -10,6 +10,6 @@ import { CountryModule } from '../country/country.module';
   imports:[TypeOrmModule.forFeature([Department]), CountryModule],
   controllers: [DepartamentController],
   providers: [DepartamentService],
-  exports: [TypeOrmModule]
+  exports: [TypeOrmModule, DepartamentService]
 })
 export class DepartamentModule {}
