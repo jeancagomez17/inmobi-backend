@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CityCreateDto, CityUpdateDto } from './dto/city.dto';
 import { City } from './entity/city.entities';
 import { DepartamentService } from '../department/departament.service';
+import { PaginationDto } from 'src/dtos-global/pagination.dto';
 @Injectable()
 export class CityService {
   constructor(
@@ -30,7 +31,7 @@ export class CityService {
   }
 
   async getAll(): Promise<City[] | {}> {
-    const data = await this.repositoryCity.find();
+    const data = await this.repositoryCity.find({relations:['department']});
     return data;
   }
 
@@ -49,15 +50,18 @@ export class CityService {
       );
       if (existDeparment) {
         if (!exist) {
-          const newCity = this.repositoryCity.create(data);
-          this.repositoryCity.save(newCity);
+          const newCity = this.repositoryCity.create({
+            ...data,
+            department: { id: departmentId },
+          });
+          await this.repositoryCity.save(newCity);
           return { msg: `Create new city -> ${data.name_city}` };
         }
         return { msg: `The name ${data.name_city} already exists` };
       }
       return { msg: `The ${departmentId} not exist` };
     } catch (error) {
-        return error.message
+      return error.message;
     }
   }
 }

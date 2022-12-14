@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CountryService } from '../country/country.service';
 import { DepartmentCreateDto, DepartmentUpdateDto } from './dto/department.dto';
 import { Department } from './entity/department.entities';
+import { PaginationDto } from 'src/dtos-global/pagination.dto';
 
 @Injectable()
 export class DepartamentService {
@@ -27,13 +28,36 @@ export class DepartamentService {
     }
   }
 
-  async getAll(): Promise<Department[] | {}> {
-    const department = await this.repositoryDepart.find();
+  async getAll({limit, offset}:PaginationDto): Promise<Department[] | {}> {
+    const cont = 0
+    const department = await this.repositoryDepart.find({
+      take: limit,
+      // order: {
+      //   name_department: 'ASC'
+      // },
+      skip:offset,
+      relations:['country']
+    });
+    return department;
+  }
+
+
+  async getAllPag(pag:number): Promise<Department[] | {}> {
+    let cont = 0
+    cont = pag + 5
+    const department = await this.repositoryDepart.find({
+      take: 5,
+      // order: {
+      //   name_department: 'ASC'
+      // },
+      skip:cont,
+      relations:['country']
+    });
     return department;
   }
 
   async getOneByName(name: string): Promise<Department[] | {}> {
-    const departament = await this.exist(name);
+    const departament = await this.exist(name)
     return departament;
   }
 

@@ -8,8 +8,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
+      transform:true,
       whitelist: true, //quitara todos los atributos o datos que se envien que no esten definidos en el dto
       forbidNonWhitelisted: true, //mostrara el error
+      transformOptions:{
+        enableImplicitConversion:true
+      }
     }),
   );
   //libreria swagger

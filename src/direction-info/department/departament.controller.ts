@@ -1,15 +1,15 @@
 import { Controller, Get, Post, Param, Body, Query } from '@nestjs/common';
-import { AnyNaptrRecord } from 'dns';
+import { PaginationDto } from 'src/dtos-global/pagination.dto';
 import { DepartamentService } from './departament.service';
 import { DepartmentCreateDto } from './dto/department.dto';
 
-@Controller('departament')
+@Controller('department')
 export class DepartamentController {
   constructor(private readonly departamentService: DepartamentService) {}
 
   @Get()
-  async getAllDepartments() {
-    const departaments = await this.departamentService.getAll();
+  async getAllDepartments(@Query() pagination:PaginationDto) {
+    const departaments = await this.departamentService.getAll(pagination);
     return departaments;
   }
 
