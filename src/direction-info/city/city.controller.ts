@@ -18,4 +18,10 @@ export class CityController {
     const newCity = await this.cityService.create(city)
     return newCity
   }
+
+  @Get('department')
+  async getDepartment(@Query('name') department:string){
+    const data = this.cityService.getByDepartment(department)
+    return data
+  }
 }

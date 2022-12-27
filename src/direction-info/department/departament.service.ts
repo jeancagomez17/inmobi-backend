@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { CountryService } from '../country/country.service';
 import { DepartmentCreateDto, DepartmentUpdateDto } from './dto/department.dto';
 import { Department } from './entity/department.entities';
@@ -14,9 +14,9 @@ export class DepartamentService {
     private readonly countryService: CountryService,
   ) {}
 
-  private async exist(name_department: string) {
+   async existName(name_department: string) {
     //metohd for verify that the department exists
-    const data = await this.repositoryDepart.findOneBy({ name_department });
+    const data = await this.repositoryDepart.findOneBy({ name_department: Like(`%${name_department}%`) });
     return data;
   }
    async existDepart(id: number) {
@@ -57,7 +57,7 @@ export class DepartamentService {
   }
 
   async getOneByName(name: string): Promise<Department[] | {}> {
-    const departament = await this.exist(name)
+    const departament = await this.existName(name)
     return departament;
   }
 
@@ -69,7 +69,7 @@ export class DepartamentService {
 
   async create(data: DepartmentCreateDto) {
     try {
-      const exist = await this.exist(data.name_department);
+      const exist = await this.existName(data.name_department);
       const { countryId } = data; // destructure for verify the country
       const existCountry = await this.countryService.existCountry(countryId);
 

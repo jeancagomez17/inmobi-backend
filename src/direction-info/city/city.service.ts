@@ -5,6 +5,7 @@ import { CityCreateDto, CityUpdateDto } from './dto/city.dto';
 import { City } from './entity/city.entities';
 import { DepartamentService } from '../department/departament.service';
 import { PaginationDto } from 'src/dtos-global/pagination.dto';
+
 @Injectable()
 export class CityService {
   constructor(
@@ -31,7 +32,7 @@ export class CityService {
   }
 
   async getAll(): Promise<City[] | {}> {
-    const data = await this.repositoryCity.find({relations:['department']});
+    const data = await this.repositoryCity.find({ relations: ['department'] });
     return data;
   }
 
@@ -39,6 +40,17 @@ export class CityService {
     const exist = await this.existById(id);
     if (!exist) return { msg: 'no existe la ciudad' };
     return exist;
+  }
+
+  async getByDepartment(departament: string): Promise<City | {}> {
+    const depart = await this.departamentService.existName(departament);
+    if (depart) {
+      const cities = await this.repositoryCity.find({
+        where: { department: { id: depart?.id } },
+      });
+      return cities;
+    }
+    return { msg: 'No existe' };
   }
 
   async create(data: CityCreateDto) {
